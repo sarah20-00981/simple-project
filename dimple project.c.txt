@@ -1,0 +1,296 @@
+#include<GL/glut.h>
+#include<stdio.h>
+
+#define drawW 1;
+#define drawH 1 ;
+float xr = 0, yr = 0,pr=0 ,rr=0;
+int counter=0;
+
+ //bird down and pipe to the left
+
+void fall()
+{
+
+			if (yr+xr>-0.9){
+		yr -= 0.06; }
+		pr-=0.2;
+	
+	
+}
+
+
+
+
+//fly the bird
+void space(int key,int x, int y)
+{
+	if (key == GLUT_KEY_UP && yr+xr <= 0.8 )
+	{	
+		
+		xr += 0.16;
+		glutPostRedisplay();
+		rr+=10;
+	}
+	
+}
+ 
+void Reshape(int width, int height)
+{
+	glViewport(0,0,width,height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	float ratio =(float)width/height;
+	if(width>height)
+	{
+		glOrtho(-1 * ratio ,1*ratio, -1, 1 ,-1, 1);
+	}
+	else
+	{
+		glOrtho(-1 ,1 , -1 /ratio, 1 /ratio ,-1, 1);
+	}
+	glClearColor(0.2,0.3,0.7,0);
+}
+
+
+void pipe(void)
+
+	{
+        
+    
+	glPushMatrix();
+	
+	glTranslated(0.5+pr,0,0);
+	//First pipe UP
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(0.2, 1);
+	glVertex2d(0.35, 1);
+	glVertex2d(0.35, -0.2);
+	glVertex2d(0.2, -0.2);
+	glEnd();
+	
+glMatrixMode(GL_MODELVIEW);
+glTranslated(2,0,0);
+glRotated(180,0,0,1);
+	//second pipe down
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(0.2, 1);
+	glVertex2d(0.35, 1);
+	glVertex2d(0.35, 0);
+	glVertex2d(0.2, 0);
+	glEnd();
+
+	//second pipe up
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(0.2, -0.5);
+	glVertex2d(0.2, -1);
+	glVertex2d(0.35, -1);
+	glVertex2d(0.35, -0.5);
+	glEnd();
+
+	
+	glMatrixMode(GL_MODELVIEW);
+	glTranslated(2,0,0);
+	glRotated(180,0,0,1);
+	//first pipe Down
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(0.2, -0.5);
+	glVertex2d(0.2, -1);
+	glVertex2d(0.35, -1);
+	glVertex2d(0.35, -0.5);
+	glEnd();
+
+
+	//third pipe up
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(3, 1);
+	glVertex2d(3.15, 1);
+	glVertex2d(3.15, 0);
+	glVertex2d(3, 0);
+	glEnd();
+	//third pipe down
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(3, -0.35);
+	glVertex2d(3.15, -0.35);
+	glVertex2d(3.15, -1);
+	glVertex2d(3, -1);
+	glEnd();
+	
+	glPushMatrix();
+	glTranslated(4,0,0);
+	glBegin(GL_QUADS);
+
+	//solo pipe up
+	glColor3d(0,0,0);
+	glVertex2d(0.2, 1);
+	glVertex2d(0.35, 1);
+	glVertex2d(0.35, -0.2);
+	glVertex2d(0.2, -0.2);
+	glEnd();
+
+	glPushMatrix();
+	glTranslated(0.7,0,0);
+	//solo pipe down
+	glBegin(GL_QUADS);
+	glColor3d(0,0,0);
+	glVertex2d(0.2, -0.5);
+	glVertex2d(0.2, -1);
+	glVertex2d(0.35, -1);
+	glVertex2d(0.35, -0.5);
+	glEnd();
+	
+	glPopMatrix();
+	
+	
+	glFlush();
+	
+		
+
+}
+
+
+void bird(void)
+{				
+		
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	
+	glPushMatrix();
+	glTranslated(-1.5,yr+xr,0);
+	glRotated(0,	rr,0,0);
+	glScalef(0.35,0.35,0);
+
+	//bird head
+	glBegin(GL_TRIANGLES);
+	glColor3d(1, 1, 0.7);
+	glVertex2f(-0.5,0);
+	glVertex2f(-0.6, 0.1 );
+	glVertex2f (-0.6, -0.1 );
+	glEnd();
+	glTranslated(-0.17,0,0);
+	glBegin(GL_TRIANGLES);
+	glColor3d(1, 1, 0.7);
+	glVertex2f(-0.5,0);
+	glVertex2f(-0.6, 0.1 );
+	glVertex2f (-0.6, -0.1 );
+	glEnd();
+
+	//bird wings
+	glRotated(40,0,1,0);
+	glBegin(GL_TRIANGLES);
+	glColor3d(1, 1, 0.2);
+	glVertex2f(-0.6,-0.1);
+	glVertex2f(-0.7,-0.2 );
+	glVertex2f (-0.67,-0.1);
+
+	glVertex2f(-0.67,0.1);
+	glVertex2f(-0.7,0.2 );
+	glVertex2f (-0.6,0.1);
+	
+	glEnd();
+
+
+	
+	//bird body
+	glBegin(GL_QUADS);
+	glColor3d(1, 1, 0.7);
+	glVertex2d(-0.6, -0.1 );
+	glVertex2d(-0.67, -0.1 );
+	glVertex2d(-0.67, 0.1 );
+	glVertex2d(-0.6, 0.1 );
+	glEnd();
+	
+	glPopMatrix();
+
+	glutPostRedisplay();
+
+	
+}
+void timer(int start)
+{	
+	fall();
+	
+	if(
+		((pr<=-2.22&&pr>-2.44)&&(((yr+xr+0.2>-0.16)||(yr+xr+0.2<-0.3))))
+		
+		||((pr+1.55<=-2.22&&pr+1.55>-2.44)&&((yr+xr+0.2<0.16)||(yr+xr+0.2>0.5)))
+
+		||((pr+2.8<=-2.22&&pr+2.8>-2.44)&&((yr+xr+0.2>0.16)||(yr+xr+0.2<-0.18)))
+		
+		||((pr+4.1<=-2.22&&pr+4.1>-2.44)&&(yr+xr+0.2>=0.1))
+		
+		||(((pr+4.77<=-2.22&&pr+4.77>-2.44))&&(yr+xr+0.2<=-0.3))
+
+		||(yr+xr<=-0.9)
+
+		)
+	{
+		glutTimerFunc(0, NULL, 0);
+		glutPostRedisplay();
+	}	
+	else
+	{	if(
+		((pr<=-2.22&&pr>-2.44)&&(((yr+xr+0.2>-0.16)||(yr+xr+0.2<-0.5))))
+		)
+	{
+		counter=0;
+	}
+		else
+	{
+		counter++;
+			if (((pr+1.55<=-2.22&&pr+1.55>-2.44)&&((yr+xr+0.2<0.16)||(yr+xr+0.2>0.5))))
+		{
+				counter=counter;
+		}
+				else
+		{
+		counter++;
+						if (((pr+2.8<=-2.22&&pr+2.8>-2.44)&&((yr+xr+0.2>0.16)||(yr+xr+0.2<-0.18))))
+
+			{
+				counter =counter;
+			}
+								else
+				{
+						counter++;
+						
+			
+			}
+		}
+		
+	
+	}
+	
+		glutTimerFunc(240, timer, 0);
+		glutPostRedisplay();
+}
+	}
+
+
+
+void display(void)
+{	pipe();
+	bird();
+	glLoadIdentity();
+	glutPostRedisplay();
+    
+}
+
+int main(int argc, char** argv)
+{
+	glutInit(&argc, argv);
+	glutInitWindowSize(8000,800);
+	glutCreateWindow("Flappy bird");
+	glutDisplayFunc(display);
+	glutTimerFunc(200, timer, 0);
+	glutSpecialFunc(space);
+	glutReshapeFunc(Reshape);
+	printf("%",counter);
+	glutMainLoop();
+	return 0;
+}
